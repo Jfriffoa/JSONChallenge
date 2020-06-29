@@ -663,7 +663,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ca5da7e79949948adff3fe15b93b16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  filename: JsonChallenge2.json
+  filename: JsonChallenge.json
   title: {fileID: 1666735099}
   content: {fileID: 421885451}
 --- !u!1 &1339205165
