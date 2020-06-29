@@ -1,0 +1,55 @@
+{
+    "Title": "Leaderboard",
+    "ColumnHeaders":
+    [
+        "Name",
+        "Score"
+    ],
+    "Data":
+    [
+        {
+            "Name": "Pablo",
+            "Score": "25332"
+        },
+        {
+            "Name": "Anne",
+            "Score": "22131"
+        },
+        {
+            "Name": "Diego",
+            "Score": "21234"
+        },
+        {
+            "Name": "Juan",
+            "Score": "21001"
+        },
+        {
+            "Name": "Manuel",
+            "Score": "20958"
+        },
+        {
+            "Name": "Diego",
+            "Score": "20457"
+        },
+        {
+            "Name": "Manuel",
+            "Score": "15839"
+        },
+        {
+            "Name": "Catalina",
+            "Score": "15634"
+        },
+        {
+            "Name": "Carola",
+            "Score": "13242"
+        },
+        {
+            "Name": "Amanda",
+            "Score": "12435"
+        },
+        {
+            "Name": "Martin",
+            "Score": "642"
+        },
+    ]
+}

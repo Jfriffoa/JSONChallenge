@@ -20,7 +20,7 @@ public class ReadJSON : MonoBehaviour
     public void Load() {
         // Clear Content
         for (int i = content.transform.childCount - 1; i >= 0; i--) {
-            Destroy(content.transform.GetChild(i));
+            Destroy(content.transform.GetChild(i).gameObject);
         }
 
         // Load JSON
@@ -91,33 +91,43 @@ public class ReadJSON : MonoBehaviour
 
     void ParseHeaders(StreamReader reader) {
         // Prepare the GameObject
-        var go = new GameObject("Headers");
-        go.AddComponent<HorizontalLayoutGroup>();
-        go.transform.SetParent(content);
+        //var go = new GameObject("Headers");
+        //go.AddComponent<HorizontalLayoutGroup>();
+        //go.transform.SetParent(content);
 
         // Read the headers
+        int headers = 0;
         string line = reader.ReadLine();
         while (!line.Contains("]")) {
             if (line.Contains("\"")) {
                 string val = GetString(line);
 
-                // Add the header to the row
-                var header = new GameObject();
+                // Add the header to the grid
+                var header = new GameObject("Header");
                 var textComponent = header.AddComponent<TextMeshProUGUI>();
                 textComponent.text = val;
                 textComponent.fontStyle = FontStyles.Bold;
-                header.transform.SetParent(go.transform);
+                textComponent.alignment = TextAlignmentOptions.Center;
+                textComponent.fontSize = 36;
+                header.transform.SetParent(content);
+                headers++;
             }
 
             line = reader.ReadLine();
         }
+
+        var layout = content.GetComponent<GridLayoutGroup>();
+        var w = content.GetComponent<RectTransform>().rect.width / headers;
+        var h = 70;
+        layout.cellSize = new Vector2(w, h);
+        layout.constraintCount = headers;
     }
 
     void ParseObject(StreamReader reader) {
         // Prepare Container
-        var go = new GameObject("Row");
-        go.AddComponent<HorizontalLayoutGroup>();
-        go.transform.SetParent(content);
+        //var go = new GameObject("Row");
+        //go.AddComponent<HorizontalLayoutGroup>();
+        //go.transform.SetParent(content);
 
         // Read the Data
         string line = reader.ReadLine();
@@ -126,10 +136,12 @@ public class ReadJSON : MonoBehaviour
                 string val = GetValue(line);
 
                 // Add the data to the row
-                var col = new GameObject();
+                var col = new GameObject("Data");
                 var textComponent = col.AddComponent<TextMeshProUGUI>();
                 textComponent.text = val;
-                col.transform.SetParent(go.transform);
+                textComponent.alignment = TextAlignmentOptions.Center;
+                textComponent.fontSize = 24;
+                col.transform.SetParent(content);
             }
 
             line = reader.ReadLine();
