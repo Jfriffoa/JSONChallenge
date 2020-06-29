@@ -3,17 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class ReadJSON : MonoBehaviour
 {
     public string filename = "JsonChallenge.json";
 
-    public TextMeshProUGUI title;
+    public Text title;
     public Transform content;
+
+    Font m_arialFont;
 
     void Start()
     {
+        m_arialFont = (Font)Resources.GetBuiltinResource<Font>("Arial.ttf");
         Load();
     }
 
@@ -104,10 +106,11 @@ public class ReadJSON : MonoBehaviour
 
                 // Add the header to the grid
                 var header = new GameObject("Header");
-                var textComponent = header.AddComponent<TextMeshProUGUI>();
+                var textComponent = header.AddComponent<Text>();
                 textComponent.text = val;
-                textComponent.fontStyle = FontStyles.Bold;
-                textComponent.alignment = TextAlignmentOptions.Center;
+                textComponent.font = m_arialFont;
+                textComponent.fontStyle = FontStyle.Bold;
+                textComponent.alignment = TextAnchor.MiddleCenter;
                 textComponent.fontSize = 36;
                 header.transform.SetParent(content);
                 headers++;
@@ -137,9 +140,10 @@ public class ReadJSON : MonoBehaviour
 
                 // Add the data to the row
                 var col = new GameObject("Data");
-                var textComponent = col.AddComponent<TextMeshProUGUI>();
+                var textComponent = col.AddComponent<Text>();
                 textComponent.text = val;
-                textComponent.alignment = TextAlignmentOptions.Center;
+                textComponent.font = m_arialFont;
+                textComponent.alignment = TextAnchor.MiddleCenter;
                 textComponent.fontSize = 24;
                 col.transform.SetParent(content);
             }
