@@ -14,6 +14,16 @@ public class ReadJSON : MonoBehaviour
 
     void Start()
     {
+        Load();
+    }
+
+    public void Load() {
+        // Clear Content
+        for (int i = content.transform.childCount - 1; i >= 0; i--) {
+            Destroy(content.transform.GetChild(i));
+        }
+
+        // Load JSON
         string path = Application.streamingAssetsPath + "/" + filename;
         if (File.Exists(path)) {
             Debug.Log("Read file");
@@ -50,7 +60,12 @@ public class ReadJSON : MonoBehaviour
 
                 // Data
                 if (key.Equals("Data")) {
-
+                    while (!line.Contains("]")) {
+                        if (line.Contains("{")) {
+                            ParseObject(reader);
+                        }
+                        line = reader.ReadLine();
+                    }
                 }
             }
         }
@@ -74,7 +89,7 @@ public class ReadJSON : MonoBehaviour
         return GetString(val);
     }
 
-    int ParseHeaders(StreamReader reader) {
+    void ParseHeaders(StreamReader reader) {
         // Prepare the GameObject
         var go = new GameObject("Headers");
         go.AddComponent<HorizontalLayoutGroup>();
@@ -82,12 +97,9 @@ public class ReadJSON : MonoBehaviour
 
         // Read the headers
         string line = reader.ReadLine();
-        int headers = 0;
         while (!line.Contains("]")) {
             if (line.Contains("\"")) {
                 string val = GetString(line);
-                print(val);
-                headers++;
 
                 // Add the header to the row
                 var header = new GameObject();
@@ -99,10 +111,28 @@ public class ReadJSON : MonoBehaviour
 
             line = reader.ReadLine();
         }
-        return headers;
     }
 
     void ParseObject(StreamReader reader) {
+        // Prepare Container
+        var go = new GameObject("Row");
+        go.AddComponent<HorizontalLayoutGroup>();
+        go.transform.SetParent(content);
 
+        // Read the Data
+        string line = reader.ReadLine();
+        while (!line.Contains("}")) {
+            if (line.Contains("\"")) {
+                string val = GetValue(line);
+
+                // Add the data to the row
+                var col = new GameObject();
+                var textComponent = col.AddComponent<TextMeshProUGUI>();
+                textComponent.text = val;
+                col.transform.SetParent(go.transform);
+            }
+
+            line = reader.ReadLine();
+        }
     }
 }
