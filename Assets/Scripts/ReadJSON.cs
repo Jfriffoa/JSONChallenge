@@ -15,6 +15,7 @@ public class ReadJSON : MonoBehaviour
 
     void Start()
     {
+        // Get the default font
         m_arialFont = (Font)Resources.GetBuiltinResource<Font>("Arial.ttf");
         Load();
     }
@@ -75,28 +76,26 @@ public class ReadJSON : MonoBehaviour
         Debug.Log("File Readed");
     }
 
+    // Get the string between the " "
     string GetString(string line) {
         int start = line.IndexOf("\"");
         int last = line.LastIndexOf("\"");
         return line.Substring(start + 1, last - start - 1);
     }
 
+    // Get the Key of the line
     string GetKey(string line) {
         string key = line.Substring(0, line.IndexOf(":"));
         return GetString(key);
     }
 
+    // Get the Value of the line
     string GetValue(string line) {
         string val = line.Substring(line.IndexOf(":") + 1);
         return GetString(val);
     }
 
     void ParseHeaders(StreamReader reader) {
-        // Prepare the GameObject
-        //var go = new GameObject("Headers");
-        //go.AddComponent<HorizontalLayoutGroup>();
-        //go.transform.SetParent(content);
-
         // Read the headers
         int headers = 0;
         string line = reader.ReadLine();
@@ -119,6 +118,7 @@ public class ReadJSON : MonoBehaviour
             line = reader.ReadLine();
         }
 
+        // Set the cell size of the grid
         var layout = content.GetComponent<GridLayoutGroup>();
         var w = content.GetComponent<RectTransform>().rect.width / headers;
         var h = 70;
@@ -127,18 +127,13 @@ public class ReadJSON : MonoBehaviour
     }
 
     void ParseObject(StreamReader reader) {
-        // Prepare Container
-        //var go = new GameObject("Row");
-        //go.AddComponent<HorizontalLayoutGroup>();
-        //go.transform.SetParent(content);
-
         // Read the Data
         string line = reader.ReadLine();
         while (!line.Contains("}")) {
             if (line.Contains("\"")) {
                 string val = GetValue(line);
 
-                // Add the data to the row
+                // Add the data to the grid
                 var col = new GameObject("Data");
                 var textComponent = col.AddComponent<Text>();
                 textComponent.text = val;
